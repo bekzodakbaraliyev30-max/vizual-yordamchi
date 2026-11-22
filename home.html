@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mening Saytim</title>
+  <style>
+    :root {
+      --bg-color: #f4f4f9;
+      --text-color: #222222;
+      --menu-bg: #ffffff;
+      --border-color: #dddddd;
+      --hover-bg: #f0f0f0;
+      --card-bg: #ffffff;
+    }
+
+    body.dark-mode {
+      --bg-color: #121212;
+      --text-color: #f4f4f9;
+      --menu-bg: #1e1e1e;
+      --border-color: #333333;
+      --hover-bg: #2c2c2c;
+      --card-bg: #1e1e1e;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color 0.25s, color 0.25s;
+      margin: 0;
+      padding: 20px;
+    }
+
+    /* Nastroyka tugmasi va menyusi */
+    .settings-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1001;
+    }
+
+    .settings-btn {
+      background-color: var(--menu-bg);
+      color: var(--text-color);
+      border: 1px solid var(--border-color);
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      font-size: 22px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .settings-menu {
+      display: none;
+      position: absolute;
+      top: 58px;
+      right: 0;
+      width: 245px;
+      background-color: var(--menu-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+      overflow: hidden;
+    }
+
+    .settings-menu.active {
+      display: block;
+    }
+
+    .menu-item {
+      width: 100%;
+      padding: 12px 15px;
+      background: none;
+      border: none;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-color);
+      text-align: left;
+      font-size: 15px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      box-sizing: border-box;
+    }
+
+    .menu-item:last-child {
+      border-bottom: none;
+    }
+
+    .menu-item:hover {
+      background-color: var(--hover-bg);
+    }
+
+    .plus-item {
+      color: #2563eb;
+      font-weight: bold;
+    }
+
+    .app-item {
+      color: #16a34a;
+      font-weight: bold;
+    }
+
+    .exit-item {
+      color: #d97706;
+    }
+
+    .logout-item {
+      color: #dc2626;
+      font-weight: bold;
+    }
+
+    /* Ekran bo'limlari */
+    .section-title {
+      margin-top: 30px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 8px;
+    }
+
+    #mediaFeed, #appsGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 16px;
+      margin-top: 15px;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .card img, .card video {
+      width: 100%;
+      max-height: 260px;
+      object-fit: cover;
+      border-radius: 8px;
+      display: block;
+    }
+
+    .download-btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 14px;
+      background-color: #2563eb;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    /* Modal oyna (dastur qo'shish uchun) */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-box {
+      background-color: var(--menu-bg);
+      color: var(--text-color);
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 380px;
+    }
+
+    .modal-box input, .modal-box textarea {
+      width: 100%;
+      padding: 8px;
+      margin: 6px 0 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      box-sizing: border-box;
+    }
+
+    .modal-btns {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .btn-save {
+      background-color: #16a34a;
+      color: #fff;
+    }
+
+    .btn-cancel {
+      background-color: #6b7280;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="siteContent">
+   
+    <div id="mediaFeed"></div>
+
+    <h2 class="section-title">Dasturlar</h2>
+    <div id="appsGrid"></div>
+  </div>
+
+  <!-- Yashirin rasm/video tanlash inputi -->
+  <input type="file" id="mediaInput" accept="image/*,video/*" multiple style="display: none;">
+
+  <!-- Nastroyka menyusi -->
+  <div class="settings-container">
+    <button type="button" class="settings-btn" id="settingsBtn" title="Sozlamalar">⚙️</button>
+
+    <div class="settings-menu" id="settingsMenu">
+      <button type="button" class="menu-item plus-item" id="addMediaBtn">
+        <span>➕</span>
+        <span>Rasm / Video joylash</span>
+      </button>
+
+      <button type="button" class="menu-item app-item" id="openAppModalBtn">
+        <span>📦</span>
+        <span>+ Dastur qo‘shish</span>
+      </button>
+
+      <button type="button" class="menu-item" id="themeToggle">
+        <span id="themeIcon">🌙</span>
+        <span id="themeText">Qora rejim</span>
+      </button>
+
+      <a href="https://www.youtube.com/@SizningKanalingiz" target="_blank" class="menu-item">
+        <span>▶️</span>
+        <span>YouTube kanal</span>
+      </a>
+
+      <button type="button" class="menu-item exit-item" id="exitSiteBtn">
+        <span>🚪</span>
+        <span>Saytdan chiqarish</span>
+      </button>
+
+      <button type="button" class="menu-item logout-item" id="logoutBtn">
+        <span>↩️</span>
+        <span>Akkauntdan chiqish</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Dastur qo'shish oynasi -->
+  <div class="modal-overlay" id="appModal">
+    <div class="modal-box">
+      <h3>Dastur qo‘shish</h3>
+      <form id="appForm">
+        <label>Dastur nomi *</label>
+        <input type="text" id="appName" required placeholder="Masalan: Telegram">
+
+        <label>Tavsif</label>
+        <textarea id="appDesc" rows="2" placeholder="Qisqacha ma'lumot"></textarea>
+
+        <label>Fayl tanlash (.apk, .exe, .zip)</label>
+        <input type="file" id="appFile">
+
+        <label>Yoki havola (URL)</label>
+        <input type="text" id="appLink" placeholder="https://...">
+
+        <div class="modal-btns">
+          <button type="button" class="btn btn-cancel" id="closeModalBtn">Bekor</button>
+          <button type="submit" class="btn btn-save">Qo‘shish</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const settingsBtn = document.getElementById('settingsBtn');
+    const settingsMenu = document.getElementById('settingsMenu');
+    const addMediaBtn = document.getElementById('addMediaBtn');
+    const mediaInput = document.getElementById('mediaInput');
+    const mediaFeed = document.getElementById('mediaFeed');
+    const openAppModalBtn = document.getElementById('openAppModalBtn');
+    const appModal = document.getElementById('appModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const appForm = document.getElementById('appForm');
+    const appsGrid = document.getElementById('appsGrid');
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const themeText = document.getElementById('themeText');
+    const exitSiteBtn = document.getElementById('exitSiteBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const siteContent = document.getElementById('siteContent');
+
+    // Menyuni ochish/yopish
+    settingsBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      settingsMenu.classList.toggle('active');
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!settingsMenu.contains(e.target) && e.target !== settingsBtn) {
+        settingsMenu.classList.remove('active');
+      }
+    });
+
+    // + Rasm / Video joylash
+    addMediaBtn.addEventListener('click', function () {
+      settingsMenu.classList.remove('active');
+      mediaInput.click();
+    });
+
+    mediaInput.addEventListener('change', function (e) {
+      const files = Array.from(e.target.files);
+      files.forEach(function (file) {
+        const url = URL.createObjectURL(file);
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        if (file.type.startsWith('image/')) {
+          const img = document.createElement('img');
+          img.src = url;
+          img.alt = file.name;
+          card.appendChild(img);
+        } else if (file.type.startsWith('video/')) {
+          const video = document.createElement('video');
+          video.src = url;
+          video.controls = true;
+          card.appendChild(video);
+        }
+
+        const p = document.createElement('p');
+        p.textContent = file.name;
+        card.appendChild(p);
+
+        mediaFeed.prepend(card);
+      });
+      mediaInput.value = '';
+    });
+
+    // Dastur qo'shish oynasi
+    openAppModalBtn.addEventListener('click', function () {
+      settingsMenu.classList.remove('active');
+      appModal.classList.add('active');
+    });
+
+    closeModalBtn.addEventListener('click', function () {
+      appModal.classList.remove('active');
+    });
+
+    appForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const name = document.getElementById('appName').value.trim();
+      const desc = document.getElementById('appDesc').value.trim() || "Tavsif yo'q";
+      const fileInput = document.getElementById('appFile');
+      const linkVal = document.getElementById('appLink').value.trim();
+
+      let url = '';
+      let fileName = name;
+
+      if (fileInput.files.length > 0) {
+        url = URL.createObjectURL(fileInput.files[0]);
+        fileName = fileInput.files[0].name;
+      } else if (linkVal !== '') {
+        url = linkVal;
+      } else {
+        alert("Dastur faylini tanlang yoki havola kiriting!");
+        return;
+      }
+
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <h3>${name}</h3>
+        <p>${desc}</p>
+        <a href="${url}" download="${fileName}" target="_blank" class="download-btn">Yuklab olish</a>
+      `;
+
+      appsGrid.prepend(card);
+      appForm.reset();
+      appModal.classList.remove('active');
+    });
+
+    // Oq / Qora fon
+    themeToggle.addEventListener('click', function () {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      themeIcon.textContent = isDark ? '☀️' : '🌙';
+      themeText.textContent = isDark ? 'Oq rejim' : 'Qora rejim';
+    });
+
+    // Saytdan chiqarish
+    exitSiteBtn.addEventListener('click', function () {
+      settingsMenu.classList.remove('active');
+      if (confirm("Saytdan chiqmoqchimisiz?")) {
+        siteContent.innerHTML = "<h2>Siz saytdan chiqdingiz.</h2><p>Qayta kirish uchun sahifani yangilang.</p>";
+      }
+    });
+
+    // Akkauntdan chiqish
+    logoutBtn.addEventListener('click', function () {
+      settingsMenu.classList.remove('active');
+      if (confirm("Akkauntdan chiqmoqchimisiz?")) {
+        alert("Akkauntdan chiqildi!");
+      }
+    });
+  </script>
+
+</body>
+</html>

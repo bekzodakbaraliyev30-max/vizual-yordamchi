@@ -1,0 +1,295 @@
+ <!DOCTYPE html>
+<html lang="uz">
+<head>
+  <link rel="stylesheet" href="styel.css">
+  <link rel="stylesheet" href="home.html">
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Xush kelibsiz — Kirish, Ro'yxatdan o'tish va Parolni tiklash</title>
+<style>
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+min-height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+background: radial-gradient(circle at center, #0e2c7a 0%, #051133 100%);
+color: #ffffff;
+}
+
+.circle-box {
+width: 480px;
+height: 480px;
+border-radius: 50%;
+background: radial-gradient(circle, #0a1f56 45%, #06143a 100%);
+border: 3px solid #38bdf8;
+box-shadow: 0 0 25px #38bdf8, inset 0 0 25px rgba(56, 189, 248, 0.4);
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 45px;
+text-align: center;
+transition: all 0.3s ease;
+}
+
+h2 {
+font-size: 24px;
+letter-spacing: 1px;
+text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+margin-bottom: 6px;
+}
+
+.subtitle {
+font-size: 13px;
+color: #cbd5e1;
+margin-bottom: 18px;
+}
+
+.form-group {
+width: 100%;
+max-width: 310px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+width: 100%;
+padding: 11px 18px;
+margin-bottom: 11px;
+border-radius: 25px;
+border: 1px solid rgba(56, 189, 248, 0.3);
+background: rgba(15, 23, 42, 0.65);
+color: #fff;
+font-size: 14px;
+outline: none;
+transition: 0.2s;
+}
+
+input:focus {
+border-color: #38bdf8;
+box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+}
+
+.options {
+display: flex;
+justify-content: space-between;
+align-items: center;
+font-size: 12px;
+margin: 4px 0 16px;
+color: #e2e8f0;
+}
+
+.options label {
+display: flex;
+align-items: center;
+gap: 6px;
+cursor: pointer;
+}
+
+.link-action {
+color: #e2e8f0;
+cursor: pointer;
+text-decoration: none;
+}
+
+.link-action:hover {
+text-decoration: underline;
+color: #38bdf8;
+}
+
+.btn {
+width: 100%;
+padding: 11px;
+border-radius: 25px;
+border: 2px solid #38bdf8;
+background: transparent;
+color: #fff;
+font-weight: bold;
+letter-spacing: 1px;
+cursor: pointer;
+box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
+transition: 0.25s;
+}
+
+.btn:hover {
+background: #38bdf8;
+color: #051133;
+box-shadow: 0 0 20px #38bdf8;
+}
+
+.switch-text {
+margin-top: 14px;
+font-size: 13px;
+line-height: 1.5;
+}
+
+.switch-link {
+color: #a3e635;
+font-weight: bold;
+cursor: pointer;
+}
+
+.switch-link:hover {
+text-decoration: underline;
+}
+
+.hidden {
+display: none;
+}
+
+.message {
+margin-top: 10px;
+font-size: 12px;
+min-height: 16px;
+}
+</style>
+</head>
+<body>
+
+<div class="circle-box">
+<!-- 1. TIZIMGA KIRISH OYNASI -->
+<div id="login-section" class="form-group">
+<h2>XUSH KELIBSIZ</h2>
+<p class="subtitle">Hisobingizga kiring</p>
+
+<form id="login-form">
+<input type="email" id="login-email" placeholder="E-pochta manzili" required />
+<input type="password" id="login-pass" placeholder="Parol" required />
+
+<div class="options">
+<label><input type="checkbox" id="remember-me" /> Meni eslaysizmi</label>
+<span class="link-action" onclick="showSection('forgot')">Unutdingizmi?</span>
+</div>
+
+<button type="submit" class="btn">TIZIMGA KIRISH</button>
+</form>
+
+<p class="switch-text">
+Hisobingiz yo'qmi? <span class="switch-link" onclick="showSection('register')">Ro'yxatdan o'ting</span>
+</p>
+<p id="login-msg" class="message"></p>
+</div>
+ <!-- 2. RO'YXATDAN O'TISH OYNASI -->
+<div id="register-section" class="form-group hidden">
+<h2>RO'YXATDAN O'TISH</h2>
+<p class="subtitle">Yangi hisob yarating</p>
+
+<form id="register-form">
+<input type="text" id="reg-name" placeholder="Ismingiz" required />
+<input type="email" id="reg-email" placeholder="E-pochta manzili" required />
+<input type="password" id="reg-pass" placeholder="Yangi parol" required />
+
+<button type="submit" class="btn">RO'YXATDAN O'TISH</button>
+</form>
+
+<p class="switch-text">
+Hisobingiz bormi? <span class="switch-link" onclick="showSection('login')">Tizimga kiring</span>
+</p>
+<p id="reg-msg" class="message"></p>
+</div>
+
+<!-- 3. PAROLNI TIKLASH OYNASI ("UNUTDINGIZMI?" BOSILGANDA) -->
+<div id="forgot-section" class="form-group hidden">
+<h2>PAROLNI TIKLASH</h2>
+<p class="subtitle">E-pochtangizni kiriting va yangi parol o'rnating</p>
+
+<form id="forgot-form">
+<input type="email" id="forgot-email" placeholder="Ro'yxatdan o'tgan e-pochta" required />
+<input type="password" id="forgot-new-pass" placeholder="Yangi parol" required />
+
+<button type="submit" class="btn">PAROLNI YANGILASH</button>
+</form>
+
+<!-- Parolni tiklash oynasidan ham Ro'yxatdan o'tish yoki Kirishga o'tish -->
+<p class="switch-text">
+<span class="link-action" onclick="showSection('login')">← Kirishga qaytish</span> <br />
+Yoki yangi hisob oching: <span class="switch-link" onclick="showSection('register')">Ro'yxatdan o'ting</span>
+</p>
+<p id="forgot-msg" class="message"></p>
+</div>
+</div>
+
+<script>
+const sections = {
+login: document.getElementById('login-section'),
+register: document.getElementById('register-section'),
+forgot: document.getElementById('forgot-section')
+};
+
+// Oynalar orasida almashish funksiyasi
+function showSection(target) {
+Object.values(sections).forEach(sec => sec.classList.add('hidden'));
+sections[target].classList.remove('hidden');
+// Eski xabarlarni tozalash
+document.querySelectorAll('.message').forEach(m => m.textContent = '');
+}
+
+// 1. Ro'yxatdan o'tish
+document.getElementById('register-form').addEventListener('submit', function(e) {
+e.preventDefault();
+const name = document.getElementById('reg-name').value.trim();
+const email = document.getElementById('reg-email').value.trim();
+const pass = document.getElementById('reg-pass').value;
+
+localStorage.setItem('user', JSON.stringify({ name, email, pass }));
+const msg = document.getElementById('reg-msg');
+msg.style.color = "#4ade80";
+msg.textContent = "Muvaffaqiyatli ro'yxatdan o'tdingiz! Kirish oynasiga o'tilmoqda...";
+
+setTimeout(() => showSection('login'), 1200);
+});
+
+// 2. Parolni tiklash ("Unutdingizmi?")
+document.getElementById('forgot-form').addEventListener('submit', function(e) {
+e.preventDefault();
+const email = document.getElementById('forgot-email').value.trim();
+const newPass = document.getElementById('forgot-new-pass').value;
+const savedUser = JSON.parse(localStorage.getItem('user'));
+const msg = document.getElementById('forgot-msg');
+
+if (savedUser && savedUser.email === email) {
+savedUser.pass = newPass;
+localStorage.setItem('user', JSON.stringify(savedUser));
+msg.style.color = "#4ade80";
+msg.textContent = "Parol muvaffaqiyatli yangilandi! Endi kirishingiz mumkin.";
+
+setTimeout(() => showSection('login'), 1300);
+} else {
+msg.style.color = "#f87171";
+msg.textContent = "Bunday e-pochta topilmadi! Pastdan ro'yxatdan o'ting.";
+}
+});
+// 3. Tizimga kirish va keyingi sahifaga o'tish
+document.getElementById('login-form').addEventListener('submit', function(e) {
+e.preventDefault();
+const email = document.getElementById('login-email').value.trim();
+const pass = document.getElementById('login-pass').value;
+const savedUser = JSON.parse(localStorage.getItem('user'));
+const msg = document.getElementById('login-msg');
+
+if (savedUser && savedUser.email === email && savedUser.pass === pass) {
+msg.style.color = "#4ade80";
+msg.textContent = "Xush kelibsiz, " + savedUser.name + "! Sahifaga o'tilmoqda...";
+
+setTimeout(() => {
+window.location.href = "home.html"; // Keyingi sahifa fayl nomi
+}, 1000);
+} else {
+msg.style.color = "#f87171";
+msg.textContent = "E-pochta yoki parol noto'g'ri!";
+}
+});
+</script>
+
+
+</body>
+</html>
+

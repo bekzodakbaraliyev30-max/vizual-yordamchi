@@ -1,0 +1,22 @@
+<form id="loginForm">
+  <input type="email" id="email" placeholder="Email Address" required />
+  <input type="password" id="password" placeholder="Password" required />
+  <button type="submit">LOGIN</button>
+</form>
+
+<script>
+  document.getElementById("loginForm").addEventListener("submit", function (event) {
+    event.preventDefault(); // Sahifa o'z-o'zidan qayta yuklanishini to'xtatadi
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    // Namuna uchun oddiy tekshiruv (haqiqiy loyihada backend/API orqali tekshiriladi)
+    if (email !== "" && password !== "") {
+      // Boshqa sahifaga o'tish
+      window.location.href = "dashboard.html";
+    } else {
+      alert("Iltimos, email va parolni kiriting!");
+    }
+  });
+</script>

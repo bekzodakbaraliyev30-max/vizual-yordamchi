@@ -1,0 +1,285 @@
+
+   * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at center, #0d1b2a 0%, #050811 100%);
+  overflow: hidden;
+  color: #fff;
+}
+
+/* Orqa fondagi mayda zarralar */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(0, 243, 255, 0.3);
+  filter: blur(2px);
+  pointer-events: none;
+}
+
+/* Dumaloq neon konteyner */
+.container {
+  position: relative;
+  width: 460px;
+  height: 460px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #0b1120;
+  box-shadow: 0 0 50px rgba(0, 217, 255, 0.35);
+}
+
+/* Aylanib turuvchi neon chegara */
+.container::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, #00f3ff, #0077ff, #b5179e, #00f3ff);
+  z-index: -1;
+  filter: blur(8px);
+  animation: spin 6s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.auth-box {
+  width: 320px;
+  text-align: center;
+  z-index: 2;
+}
+
+/* Sign Up oynasini boshida yashirib turish (JS orqali almashadi) */
+.signup-box {
+  display: none;
+}
+
+h1, h2 {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #7ee8fa;
+  text-shadow: 0 0 12px rgba(126, 232, 250, 0.7);
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: #8d99ae;
+  margin-bottom: 24px;
+}
+
+/* Floating placeholder maydonlari */
+.input-group {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 13px 18px;
+  border-radius: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(5, 8, 17, 0.75);
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.input-group input:focus {
+  border-color: #00f3ff;
+  box-shadow: 0 0 10px rgba(0, 243, 255, 0.25);
+}
+
+.input-group label {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 13px;
+  color: #6c757d;
+  pointer-events: none;
+  transition: 0.3s ease;
+}
+
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label {
+  top: -8px;
+  left: 16px;
+  font-size: 11px;
+  color: #00f3ff;
+  background: #0b1120;
+  padding: 0 6px;
+  border-radius: 4px;
+}
+
+/* Remember me va Forgot? */
+.options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #8d99ae;
+  margin: 10px 6px 20px;
+}
+
+.remember {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.forgot-link {
+  color: #5dade2;
+  text-decoration: none;
+}
+
+.forgot-link:hover {
+  text-decoration: underline;
+}
+
+/* LOGIN tugmasi */
+.btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 25px;
+  border: 1.5px solid #00f3ff;
+  background: transparent;
+  color: #9be870;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(0, 243, 255, 0.25);
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: rgba(0, 243, 255, 0.15);
+  box-shadow: 0 0 20px rgba(0, 243, 255, 0.6);
+}
+
+/* Pastki yozuv */
+.switch-text {
+  margin-top: 20px;
+  font-size: 12px;
+  color: #8d99ae;
+}
+
+.switch-text a {
+  color: #70e000;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.switch-text a:hover {
+  text-decoration: underline;
+}
+.tugma {
+  display: inline-block;
+  background-color: #ffffff; /* Tugma foni (oq) */
+  color: #0056b3;            /* Yozuv rangi (ko'k) */
+  padding: 15px 30px;        /* Ichki bo'shliq (tugma kattaligi) */
+  font-size: 18px;           /* Shrift kattaligi */
+  font-weight: bold;         /* Yozuvni qalin qilish */
+  text-decoration: none;     /* Tagidagi chiziqni olib tashlash */
+  border-radius: 8px;        /* Burchaklarni yumaloqlash */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Soya berish */
+  transition: 0.3s;          /* Silliq o'zgarish effekti */
+}
+
+/* Sichqoncha tugma ustiga borgandagi holat */
+.tugma:hover {
+  background-color: #e6f0ff;
+  transform: translateY(-2px);
+}
+.tugma {
+  background-color: red; /* Tugmaning ichi qizil rangda */
+  color: #ffffff;        /* Yozuv ko'rinishi uchun oq rang */
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  /* Rasmdagi to'q ko'kish-kulrang fon */
+  background-color: #364156; 
+}
+
+/* Switch konteyneri */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 220px;
+  height: 100px;
+}
+
+/* Oddiy checkboxni yashirish */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Ichkariga botib turuvchi kapsula (track) */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #364156;
+  border-radius: 50px;
+  transition: 0.4s;
+  /* Neumorphism ichki soyalari (inset shadows) */
+  box-shadow: 
+    inset 6px 6px 12px #262e3d, 
+    inset -6px -6px 12px #46546f;
+}
+
+/* Ichidagi oq yumaloq tugma (thumb) */
+.slider::before {
+  position: absolute;
+  content: "";
+  height: 76px;
+  width: 76px;
+  left: 12px;
+  bottom: 12px;
+  background: linear-gradient(145deg, #f0f2f5, #c8cdd6);
+  border-radius: 50%;
+  transition: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  /* Tugmaning tashqi soyasi */
+  box-shadow: 
+    4px 4px 10px #222937,
+    -2px -2px 6px rgba(255, 255, 255, 0.15);
+}
+
+/* Bosilganda (checked) o'ng tomonga surilishi */
+input:checked + .slider::before {
+  transform: translateX(120px);
+}
